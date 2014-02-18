@@ -68,8 +68,9 @@ end
 
 ### Using
 
-There is a helper method which name is rating_for to add the star links. By default rating_for will display the average rating and accept the
-new rating value from authenticated user.
+There are two helper methods to render ratings:
+
+ You can user the rating_for helper method to show the average rating for a given object and dimension.
 
 ```erb
 <%# show.html.erb -> /cars/1 %>
@@ -87,12 +88,11 @@ Speed : <%= rating_for @car, "engine", :star => 7 %>
 Speed : <%= rating_for @car, "price" %>
 ```
 
-You can use the rating_for_user helper method to show the star rating for the user.
+ You can use the user_rating_for helper method to show the star rating for a given user.
 
 ```erb
 Speed : <%= rating_for_user @car, current_user, "speed", :star => 10 %>
 ```
-
 
 ## Feedback
 If you find bugs please open a ticket at [https://github.com/muratguzel/letsrate/issues](https://github.com/muratguzel/letsrate/issues)
