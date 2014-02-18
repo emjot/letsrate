@@ -67,7 +67,3 @@ module Letsrate
   end
 
 end
-
-class ActionView::Base
-  include Letsrate::Helpers
-end
