@@ -36,6 +36,7 @@ module Letsrate
         avg.avg = davg
         avg.dimension = dimension
       end
+      average(dimension, true)
     else
       a = average(dimension)
       a.qty = rates(dimension).count
@@ -53,6 +54,7 @@ module Letsrate
         avg.qty = 1
         avg.dimension = dimension
       end
+      average(dimension, true)
     else
       a = average(dimension)
       a.qty = rates(dimension).count
@@ -61,8 +63,8 @@ module Letsrate
     end
   end
 
-  def average(dimension=nil)
-    dimension ?  self.send("#{dimension}_average") : rate_average_without_dimension
+  def average(dimension=nil, reload = false)
+    dimension ?  self.send("#{dimension}_average".to_sym, reload) : rate_average_without_dimension(reload)
   end
 
   def can_rate?(user, dimension=nil)
