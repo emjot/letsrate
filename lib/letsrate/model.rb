@@ -36,6 +36,7 @@ module Letsrate
         avg.avg = davg
         avg.dimension = dimension
       end
+      average(dimension, true)
     else
       a = average(dimension)
       a.qty = rates(dimension).count
@@ -53,6 +54,7 @@ module Letsrate
         avg.qty = 1
         avg.dimension = dimension
       end
+      average(dimension, true)
     else
       a = average(dimension)
       a.qty = rates(dimension).count
@@ -61,8 +63,8 @@ module Letsrate
     end
   end
 
-  def average(dimension=nil)
-    dimension ?  self.send("#{dimension}_average") : rate_average_without_dimension
+  def average(dimension=nil, reload = false)
+    dimension ?  self.send("#{dimension}_average".to_sym, reload) : rate_average_without_dimension(reload)
   end
 
   def can_rate?(user, dimension=nil)
@@ -70,11 +72,11 @@ module Letsrate
   end
 
   def rates(dimension=nil)
-    dimension ? self.send("#{dimension}_rates") : rates_without_dimension
+    dimension ? self.send("#{dimension}_rates".to_sym) : rates_without_dimension
   end
 
   def raters(dimension=nil)
-    dimension ? self.send("#{dimension}_raters") : raters_without_dimension
+    dimension ? self.send("#{dimension}_raters".to_sym) : raters_without_dimension
   end
 
   module ClassMethods
@@ -91,7 +93,7 @@ module Letsrate
 
       dimensions.each do |dimension|
         has_many  "#{dimension}_rates".to_sym, :dependent => :destroy, :class_name => "Rate", :as => :rateable, :conditions => {:dimension => dimension.to_s}
-        has_many  "#{dimension}_raters".to_sym, :through => "#{dimension}_rates", :source => :rater
+        has_many  "#{dimension}_raters".to_sym, :through => "#{dimension}_rates".to_sym, :source => :rater
 
         has_one   "#{dimension}_average".to_sym, :as => :cacheable, :class_name => "RatingCache", :dependent => :destroy, :conditions => {:dimension => dimension.to_s}
       end
