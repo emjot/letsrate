@@ -17,7 +17,7 @@ Find it at [github.com/muratguzel/letsrate](https://github.com/muratguzel/letsra
 Add the letsrate gem into your Gemfile
 
 ```ruby
-gem 'letsrate'
+gem 'letsrate', '~> 1.0.9'
 ```
 
 ### Generate
@@ -26,12 +26,12 @@ gem 'letsrate'
 rails g letsrate User
 ```
 
-The generator takes one argument which is the name of your existing devise user model UserModelName. This is necessary to bind the user and rating datas.
+The generator takes one argument which is the name of your existing user model UserModelName. This is necessary to bind the user and rating datas.
 Also the generator copies necessary files (jquery raty plugin files, star icons and javascripts)
 
 Example:
 
-Suppose you will have a devise user model which name is User. The devise generator and letsrate generator should be like below
+Suppose you will have a user model which name is User. You could generate one with the devise generator:
 
 ```
 rails g devise:install
@@ -50,19 +50,21 @@ I suppose you have a car model
 rails g model car name:string
 ```
 
-You should add the letsrate_rateable function with its dimensions option. You can add multiple dimensions.
+You have to include the Letsrate::rateable concern in your car model and define its rating dimensions with the rateable_on class method.
 
 ```ruby
 class Car < ActiveRecord::Base
-  letsrate_rateable "speed", "engine", "price"
+  include Letsrate::Rateable
+
+  rateable_on "speed", "engine", "price"
 end
 ```
 
-Then you need to add a call letsrate_rater in the user model.
+Then you need to include the Letsrate::Rater concern in the user model.
 
 ```ruby
 class User < ActiveRecord::Base
-  letsrate_rater
+  include Letsrate::Rater
 end
 ```
 
