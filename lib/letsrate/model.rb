@@ -72,11 +72,11 @@ module Letsrate
   end
 
   def rates(dimension=nil)
-    dimension ? self.send("#{dimension}_rates") : rates_without_dimension
+    dimension ? self.send("#{dimension}_rates".to_sym) : rates_without_dimension
   end
 
   def raters(dimension=nil)
-    dimension ? self.send("#{dimension}_raters") : raters_without_dimension
+    dimension ? self.send("#{dimension}_raters".to_sym) : raters_without_dimension
   end
 
   module ClassMethods
@@ -99,7 +99,7 @@ module Letsrate
                                               :class_name => "Rate",
                                               :as => :rateable
 
-        has_many "#{dimension}_raters".to_sym, :through => "#{dimension}_rates", :source => :rater
+        has_many "#{dimension}_raters".to_sym, :through => "#{dimension}_rates".to_sym, :source => :rater
 
         has_one "#{dimension}_average".to_sym, -> { where dimension: dimension.to_s },
                                               :as => :cacheable, :class_name => "RatingCache",
