@@ -93,7 +93,7 @@ Speed : <%= rating_for @car, "price" %>
  You can use the user_rating_for helper method to show the star rating for a given user.
 
 ```erb
-Speed : <%= rating_for_user @car, current_user, "speed", :star => 10 %>
+Speed : <%= user_rating_for @car, current_user, "speed", :star => 10 %>
 ```
 
 ## Feedback
