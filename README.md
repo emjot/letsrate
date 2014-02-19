@@ -50,7 +50,7 @@ I suppose you have a car model
 rails g model car name:string
 ```
 
-You have to include the Letsrate::rateable concern in your car model and define its rating dimensions with the rateable_on class method.
+You have to include the Letsrate::Rateable concern in your car model and define its rating dimensions with the rateable_on class method.
 
 ```ruby
 class Car < ActiveRecord::Base
