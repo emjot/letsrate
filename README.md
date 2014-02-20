@@ -50,13 +50,21 @@ I suppose you have a car model
 rails g model car name:string
 ```
 
-You have to include the Letsrate::Rateable concern in your car model and define its rating dimensions with the rateable_on class method.
+You have to include the Letsrate::Rateable concern in your car model to enable a one dimensional rating.
+
+```ruby
+class Car < ActiveRecord::Base
+  include Letsrate::Rateable
+end
+```
+
+You can also define multiple additional rating dimensions by using the rateable_dimensions class method.
 
 ```ruby
 class Car < ActiveRecord::Base
   include Letsrate::Rateable
 
-  rateable_on "speed", "engine", "price"
+  rateable_dimensions "speed", "engine", "price"
 end
 ```
 
@@ -72,14 +80,21 @@ end
 
 There are two helper methods to render ratings:
 
- You can user the rating_for helper method to show the average rating for a given object and dimension.
+You can user the rating_for helper method to show the average rating for a given object.
 
 ```erb
 <%# show.html.erb -> /cars/1 %>
 
-Speed : <%= rating_for @car, "speed" %>
+Rating :  <%= rating_for @car %>
+```
+If you defined multiple rating dimensions you can pass them to the helper.
+
+```erb
+<%# show.html.erb -> /cars/1 %>
+
+Speed :  <%= rating_for @car, "speed" %>
 Engine : <%= rating_for @car, "engine" %>
-Price : <%= rating_for @car, "price" %>
+Price :  <%= rating_for @car, "price" %>
 ```
 
 If you need to change the star number, you should use star option like below.
